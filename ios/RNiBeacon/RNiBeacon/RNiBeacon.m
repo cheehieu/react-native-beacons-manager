@@ -17,7 +17,7 @@
 #import "RNiBeacon.h"
 
 static NSString *const kEddystoneRegionID = @"EDDY_STONE_REGION_ID";
-bool hasListeners = NO;
+bool RNiBeaconHasListeners = NO;
 
 @interface RNiBeacon() <CLLocationManagerDelegate, ESSBeaconScannerDelegate>
 
@@ -31,11 +31,11 @@ bool hasListeners = NO;
 
 // Will be called when this module's first listener is added.
 - (void)startObserving {
-  hasListeners = YES;
+  RNiBeaconHasListeners = YES;
 }
 // Will be called when this module's last listener is removed, or on dealloc.
 - (void)stopObserving {
-  hasListeners = NO;
+  RNiBeaconHasListeners = NO;
 }
 
 RCT_EXPORT_MODULE()
@@ -291,7 +291,7 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 -(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
     NSString *statusName = [self nameForAuthorizationStatus:status];
-    if (self.bridge && hasListeners) {
+    if (self.bridge && RNiBeaconHasListeners) {
       [self sendEventWithName:@"authorizationStatusDidChange" body:statusName];
     }
 }
@@ -324,7 +324,7 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
                           @"state":   [self stringForState:state],
                           @"identifier":  region.identifier,
                           };
-    if (self.bridge && hasListeners) {
+    if (self.bridge && RNiBeaconHasListeners) {
       [self sendEventWithName:@"didDetermineState" body:event];
     }
 }
@@ -358,7 +358,7 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
                           @"beacons": beaconArray
                           };
 
-    if (self.bridge && hasListeners) {
+    if (self.bridge && RNiBeaconHasListeners) {
       [self sendEventWithName:@"beaconsDidRange" body:event];
     }
 }
@@ -372,7 +372,7 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 
   NSDictionary *event = [self convertBeaconRegionToDict: region];
 
-  if (self.bridge && hasListeners) {
+  if (self.bridge && RNiBeaconHasListeners) {
     [self sendEventWithName:@"regionDidEnter" body:event];
   }
 }
@@ -386,7 +386,7 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
 
   NSDictionary *event = [self convertBeaconRegionToDict: region];
 
-  if (self.bridge && hasListeners) {
+  if (self.bridge && RNiBeaconHasListeners) {
     [self sendEventWithName:@"regionDidExit" body:event];
   }
 }
@@ -415,7 +415,7 @@ RCT_EXPORT_METHOD(shouldDropEmptyRanges:(BOOL)drop)
                                     },
                             @"beacons": beaconArray
                             };
-    if (self.bridge && hasListeners) {
+    if (self.bridge && RNiBeaconHasListeners) {
       [self sendEventWithName:@"beaconsDidRange" body:event];
     }
 }
