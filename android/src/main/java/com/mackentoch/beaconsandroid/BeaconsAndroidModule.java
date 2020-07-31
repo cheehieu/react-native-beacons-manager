@@ -313,6 +313,7 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
       map.putString("uuid", region.getId1() != null ? region.getId1().toString() : "");
       map.putInt("major", region.getId2() != null ? region.getId2().toInt() : 0);
       map.putInt("minor", region.getId3() != null ? region.getId3().toInt() : 0);
+      map.putString("address", region.getBluetoothAddress() != null ? region.getBluetoothAddress().toString() : "null");
       return map;
   }
 
@@ -384,6 +385,7 @@ public class BeaconsAndroidModule extends ReactContextBaseJavaModule implements 
                 b.putDouble("distance", beacon.getDistance());
                 b.putString("proximity", getProximity(beacon.getDistance()));
             }
+          b.putString("address", beacon.getBluetoothAddress());
           a.pushMap(b);
       }
       map.putArray("beacons", a);
